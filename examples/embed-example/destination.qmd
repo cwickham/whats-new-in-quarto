@@ -1,0 +1,6 @@
+---
+title: Destination Document
+format: html
+---
+
+{{< embed source.qmd#fig-scatter >}}

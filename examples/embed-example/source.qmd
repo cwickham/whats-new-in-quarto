@@ -1,0 +1,53 @@
+---
+title: "Source Document"
+format: html
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Data Import 
+
+```{.r}
+Lots and lots of code
+```
+
+## Data Prep
+
+```{.r}
+Even more code
+```
+
+## Exploration
+
+```{r}
+ggplot(penguins, 
+       aes(x = flipper_length_mm, y = bill_length_mm))  +
+  geom_point(aes(color = species, shape = species))
+```
+
+
+The plot below shows the relationship between flipper and bill lengths of these penguins.
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: A scatterplot embedded from another .qmd document
+#| warning: false
+
+ggplot(penguins, 
+       aes(x = flipper_length_mm, y = bill_length_mm)) +
+  geom_point(aes(color = species, shape = species)) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(
+    title = "Flipper and bill length",
+    subtitle = "Dimensions for penguins at Palmer Station LTER",
+    x = "Flipper length (mm)", y = "Bill length (mm)",
+    color = "Penguin species", shape = "Penguin species"
+  ) +
+  theme_minimal()
+```

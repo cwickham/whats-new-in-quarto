@@ -1,0 +1,5 @@
+project:
+  title: "Project Profiles"
+  output-dir: external
+
+keep-md: true
