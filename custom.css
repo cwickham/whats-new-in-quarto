@@ -1,0 +1,29 @@
+#title-slide > h1, #title-slide {
+  color: #39729E;
+}
+
+.v-center-container {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}
+
+code, .code-with-filename-file {
+  font-size: 1.3em;
+}
+
+.page-output {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 25px;
+}
+
+div.sourceCode {
+  background-color: #F0F5F9;
+}
+
+.reveal img, .reveal video, .reveal iframe{
+    max-width: 100%;
+    max-height: 100%;
+}

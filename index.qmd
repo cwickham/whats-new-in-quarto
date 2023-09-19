@@ -1,0 +1,705 @@
+---
+title: "What's new in"
+author: Charlotte Wickham
+institute: Developer Educator @ Posit
+title-slide-attributes:
+  data-background-color: "#fff"
+  data-background-position: "50% 20%"
+fontsize: 36pt
+format: 
+  revealjs:
+    css: custom.css
+    code-line-numbers: false
+    code-overflow: wrap
+    code-copy: false
+    highlight-style: a11y
+    width: "1600"
+    height: "900"
+    code-annotations: "hover"  
+    multiplex: true  
+    theme: [serif, custom.scss]
+    template-partials:
+      - title-slide.html
+crossref-custom: 
+  - kind: float 
+    ref_type: dia
+    prefix: Diagram
+    name: Diagram
+    latex_env: diagram 
+    latex_list_of_name: lod
+---
+
+## A Guide to Quarto Versions
+
+::: r-stack
+![](assets/timeline-1.svg){width="1200"}
+
+![](assets/timeline-2.svg){.fragment width="1200" fragment-index="3"}
+
+![](assets/timeline-full.svg){.fragment width="1200" fragment-index="5"}
+:::
+
+::: {.fragment fragment-index="4"}
+**Current**: <https://quarto.org/docs/download/>, reflected in docs, stable
+:::
+
+::: {.fragment fragment-index="6"}
+**Pre-release**: <https://quarto.org/docs/download/prerelease>
+:::
+
+::: {.fragment .absolute bottom="50"}
+Check your version with:
+
+``` {.bash filename="Terminal"}
+quarto --version
+```
+:::
+
+# Content
+
+## Embed Outputs from Other Documents
+
+::: columns
+::: {.column width="50%"}
+::: fragment
+Source Document
+:::
+
+<iframe width="750" height="600" data-src="examples/embed-example/source.html">
+
+</iframe>
+:::
+
+::: {.column width="50%"}
+::: fragment
+Destination Document
+:::
+
+::: fragment
+<iframe width="750" height="600" data-src="examples/embed-example/destination.html">
+
+</iframe>
+:::
+:::
+:::
+
+## Embed Outputs from Other Documents
+
+::: columns
+::: {.column .fragment width="50%" fragment-index="1"}
+```` {.markdown filename="source.qmd" code-line-numbers="1-17|2-3" fragment-index="1"}
+```{{r}}
+#| label: fig-scatter
+#| fig-cap: A scatterplot embedded from another .qmd document
+#| warning: false
+
+ggplot(penguins, 
+       aes(x = flipper_length_mm, y = bill_length_mm)) +
+  geom_point(aes(color = species, shape = species)) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(
+    title = "Flipper and bill length",
+    subtitle = "Dimensions for penguins at Palmer Station LTER",
+    x = "Flipper length (mm)", y = "Bill length (mm)",
+    color = "Penguin species", shape = "Penguin species"
+  ) +
+  theme_minimal()
+```
+````
+:::
+
+::: {.column .fragment width="50%" fragment-index="2"}
+``` {.markdown filename="destination.qmd" code-line-numbers="1-6|6"}
+---
+title: Destination Document
+format: html
+---
+
+{{< embed source.qmd#fig-scatter >}}
+```
+:::
+:::
+
+## Embed Outputs from Other Documents
+
+<iframe width="1400" height="550" id="scaled-frame" data-src="examples/embed-example/destination.html">
+
+</iframe>
+
+Embed from Jupyter Notebooks (.ipynb) v1.3 or,\
+Quarto documents (.qmd) v1.4
+
+## Cross Reference Anything
+
+::: columns
+::: {.column .fragment width="50%"}
+``` markdown
+::: {#fig-example1}
+
+Reference-able Content
+
+This is a caption.
+
+:::
+
+@fig-example1 shows ...
+```
+:::
+
+::: {.column .fragment width="50%"}
+::: page-output
+::: {#fig-example1}
+Reference-able Content
+
+This is a caption.
+:::
+
+@fig-example1 shows ...
+:::
+:::
+:::
+
+## Cross Reference Anything
+
+::: columns
+::: {.column width="50%"}
+```` markdown
+::: {#fig-example2}
+
+```{{r}}
+library(tidyverse)
+```
+
+This is a caption.
+
+:::
+
+@fig-example2 shows ...
+````
+:::
+
+::: {.column width="50%"}
+::: page-output
+::: {#fig-example2}
+```{{r}}
+library(tidyverse)
+```
+
+This is a caption.
+:::
+
+@fig-example2 shows ...
+:::
+:::
+:::
+
+## Cross Reference Anything
+
+::: columns
+::: {.column width="50%"}
+``` markdown
+::: {#tbl-example}
+
+![](table.png)
+
+This is a caption.
+
+:::
+
+@tbl-example shows ...
+```
+:::
+
+::: {.column width="50%"}
+::: page-output
+::: {#tbl-example}
+![](table.png)
+
+This is a caption.
+:::
+
+@tbl-example shows ...
+:::
+:::
+:::
+
+## Cross Reference Anything
+
+::: columns
+::: {.column width="50%"}
+Define new types of cross reference in YAML options
+:::
+
+::: {.column width="50%"}
+``` yaml
+---
+crossref-custom: 
+  - kind: float 
+    ref_type: dia
+    prefix: Diagram
+    name: Diagram
+    latex_env: diagram 
+    latex_list_of_name: lod
+---
+```
+:::
+:::
+
+## Cross Reference Anything
+
+::: columns
+::: {.column width="50%"}
+``` markdown
+::: {#dia-example}
+![](table.png)
+
+This is a caption.
+
+:::
+
+@dia-example shows ...
+```
+:::
+
+::: {.column width="50%"}
+::: page-output
+::: {#dia-example}
+![](table.png)
+
+This is a caption.
+:::
+
+@dia-example shows ...
+:::
+:::
+:::
+
+## Inline Execution for Jupyter
+
+::: columns
+::: {.column .fragment width="50%" fragment-index="2"}
+::: page-output
+The radius is 10.
+:::
+:::
+
+::: {.column width="50%"}
+::: {.fragment fragment-index="1"}
+```` markdown
+```{{python}}
+radius = 10
+```
+````
+:::
+
+<br/>
+
+::: fragment
+```` markdown
+```{{python}}
+#| echo: false
+from IPython.display import display, Markdown
+display(Markdown("""
+The radius of the circle is {radius}.
+""".format(radius = radius)))
+```
+````
+
+v1.3
+:::
+:::
+:::
+
+## Inline Execution for Jupyter
+
+::: columns
+::: {.column width="50%"}
+::: page-output
+The radius is 10.
+:::
+:::
+
+::: {.column width="50%"}
+```` markdown
+```{{python}}
+radius = 10
+```
+````
+
+<br/>
+
+``` markdown
+The radius is `{python} x`.
+```
+
+v1.4
+:::
+:::
+
+::: footer
+[Inline Execution for Jupyter](https://quarto.org/docs/prerelease/1.4/inline.html)
+:::
+
+## Inline Execution for Jupyter
+
+::: columns
+::: {.column width="50%"}
+::: page-output
+The radius is 10.
+:::
+:::
+
+::: {.column width="50%"}
+```` markdown
+```{{julia}}
+radius = 10
+```
+````
+
+<br/>
+
+``` markdown
+The radius is `{julia} x`.
+```
+
+v1.4
+:::
+:::
+
+::: footer
+[Inline Execution for Jupyter](https://quarto.org/docs/prerelease/1.4/inline.html)
+:::
+
+## Add Context to Code {auto-animate="true"}
+
+::: columns
+::: {.column .fragment width="50%"}
+::: page-output
+``` yaml
+project: 
+  type: website
+  
+website:
+  title: "Quarto"
+```
+:::
+:::
+
+::: {.column .fragment width="50%"}
+```` {.markdown data-id="input-code"}
+```{.yaml}
+project: 
+  type: website
+  
+website:
+  title: "Quarto"
+```
+````
+:::
+:::
+
+## Add Context to Code {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+::: page-output
+``` {.yaml filename="_quarto.yml"}
+project: 
+  type: website
+  
+website:
+  title: "Quarto"
+```
+:::
+:::
+
+::: {.column width="50%"}
+```` {.markdown data-id="input-code"}
+```{.yaml filename="_quarto.yml"}
+project: 
+  type: website
+  
+website:
+  title: "Quarto"
+```
+````
+:::
+:::
+
+Add the **where** with the filename attribute (v1.2)
+
+::: footer
+[Code Filename](https://quarto.org/docs/output-formats/html-code.html#code-filename)
+:::
+
+## Add Context to Code
+
+::: columns
+::: {.column width="50%"}
+::: page-output
+``` {.yaml filename="_quarto.yml"}
+project:          # <1>
+  type: website   # <1>
+  
+website:          # <2>
+  title: "Quarto" # <2>
+```
+
+1.  General Quarto project options
+2.  Website specific options
+:::
+:::
+
+::: {.column width="50%"}
+```` {.markdown data-id="input-code"}
+```{.yaml filename="_quarto.yml"}
+project:          # <1>
+  type: website   # <1>
+  
+website:          # <2>
+  title: "Quarto" # <2>
+```
+1. General Quarto project options
+2. Website specific options
+````
+:::
+:::
+
+Add **line** context with the code annotation (v1.3)
+
+::: footer
+[Code Annotation](https://quarto.org/docs/authoring/code-annotation.html)
+:::
+
+::: notes
+1.3
+
+Add some special comment syntax to your code
+:::
+
+# Projects
+
+## Create Projects Quickly
+
+::: fragment
+{{< video assets/quarto-create.mov >}}
+:::
+
+## Create Projects Quickly
+
+``` {.bash filename="Terminal"}
+quarto create project website test-website
+```
+
+## Generate Variations with Project Profiles
+
+::: columns
+::: {.column width="50%"}
+::: fragment
+``` {.markdown filename="report.qmd"}
+---
+title: Report
+---
+
+## For Everyone
+```
+:::
+:::
+
+::: {.column width="50%"}
+::: fragment
+``` {.yml filename="_quarto.yml"}
+project:
+  title: "Project Profiles"
+  output-dir: external
+```
+:::
+:::
+:::
+
+<br/>
+
+::: fragment
+external/report.html
+
+<iframe width="750" height="300" data-src="examples/project-profiles/external/report.html">
+
+</iframe>
+:::
+
+## Generate Variations with Project Profiles
+
+::: columns
+::: {.column width="50%"}
+Create a new profile, by creating a new Quarto config file.
+
+<br/>
+
+::: {.fragment fragment-index="2"}
+Activate a profile:
+
+``` {.bash filename="Terminal"}
+quarto render --profile internal
+```
+:::
+:::
+
+::: {.column width="50%"}
+::: {.fragment fragment-index="1"}
+``` {.yml filename="_quarto-internal.yml"}
+project:
+  output-dir: internal
+```
+:::
+:::
+:::
+
+::: fragment
+internal/report.html
+
+<iframe width="750" height="300" data-src="examples/project-profiles/external/report.html">
+
+</iframe>
+:::
+
+## Generate Variations with Project Profiles
+
+::: columns
+::: {.column width="50%"}
+Create a new profile, by creating a new Quarto config file.
+
+<br/>
+
+<div>
+
+Activate a profile:
+
+``` {.bash filename="Terminal"}
+quarto render --profile internal
+```
+
+</div>
+:::
+
+::: {.column width="50%"}
+<div>
+
+``` {.yml filename="_quarto-internal.yml"}
+project:
+  output-dir: internal
+
+format:
+  html:
+    theme: solar
+```
+
+</div>
+:::
+:::
+
+<div>
+
+internal/report.html
+
+<iframe width="750" height="300" data-src="examples/project-profiles/internal/report-1.html">
+
+</iframe>
+
+</div>
+
+## Generate Variations with Project Profiles
+
+``` {.markdown filename="report.qmd"}
+---
+title: Report
+---
+
+## For Everyone
+
+
+## Internal Eyes Only  
+```
+
+## Generate Variations with Project Profiles
+
+``` {.markdown filename="report.qmd"}
+---
+title: Report
+---
+
+## For Everyone
+
+::: {.content-visible when-profile="internal"}
+## Internal Eyes Only  
+:::
+```
+
+## Generate Variations with Project Profiles
+
+::: columns
+::: {.column width="50%"}
+external/report.html
+
+<iframe width="750" height="300" data-src="examples/project-profiles/external/report.html">
+
+</iframe>
+:::
+
+::: {.column width="50%"}
+internal/report.html
+
+<iframe width="750" height="300" data-src="examples/project-profiles/internal/report.html">
+
+</iframe>
+:::
+:::
+
+<div>
+
+</div>
+
+# Tools
+
+## Visual Studio Code Extension
+
+Now has a Visual Editor
+
+## JupyterLab Extension
+
+::: columns
+::: {.column width="50%"}
+![](assets/jupyter-lab-extension.png)
+:::
+
+::: {.column width="50%"}
+Interprets Quarto markdown
+:::
+:::
+
+# Wrapping Up
+
+## Other features in 1.4
+
+-   Manuscripts for scholarly writing
+
+-   Typst an alternative to LaTeX
+
+## Keeping Up to Date
+
+## Keeping Up to Date
+
+::: {.fragment}
+Changelogs 
+:::
+
+::: {.fragment}
+![](images/Screen Shot 2023-09-20 at 12.02.48 AM.png)
+:::
+
+## Keeping Up to Date
+
+![](images/Screen Shot 2023-09-20 at 12.02.09 AM.png)
+
+## Keeping Up to Date
+
+![](images/Screen Shot 2023-09-20 at 12.04.03 AM.png)
